@@ -1,6 +1,6 @@
-[![CI](https://github.com/fusesoc/fusesoc-webserver/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/fusesoc/fusesoc-webserver/actions/workflows/ci.yml)
-[![Docs](https://github.com/fusesoc/fusesoc-webserver/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/fusesoc/fusesoc-webserver/actions/workflows/docs.yml)
-[![Docker](https://github.com/fusesoc/fusesoc-webserver/actions/workflows/docker.yml/badge.svg?branch=main)](https://github.com/fusesoc/fusesoc-webserver/actions/workflows/docker.yml)
+[![CI](https://github.com/anlu85/fusesoc-pd-server/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/fusesoc/fusesoc-webserver/actions/workflows/ci.yml)
+[![Docs](https://github.com/anlu85/fusesoc-pd-server/actions/workflows/docs.yml/badge.svg?branch=main)](https://github.com/fusesoc/fusesoc-webserver/actions/workflows/docs.yml)
+[![Docker](https://github.com/anlu85/fusesoc-pd-server/actions/workflows/docker.yml/badge.svg?branch=main)](https://github.com/fusesoc/fusesoc-webserver/actions/workflows/docker.yml)
 [![Developer Docs](https://img.shields.io/badge/docs-source--code--reference-blue)](https://fusesoc.github.io/fusesoc-webserver/)
 # FuseSoC Package Database (FuseSoC-PD)
 
