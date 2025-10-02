@@ -30,7 +30,7 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
-from .views.api_views import APIDocsLandingPageView, HealthCheckView, Validate, Publish, Cores, GetCore
+from .views.api_views import APIDocsLandingPageView, HealthCheckView, Validate, Publish, Cores, GetCore, GetArchive
 
 app_name = "core_directory"
 
@@ -44,6 +44,7 @@ urlpatterns = [
         path('get/', GetCore.as_view(), name='core_get'),
         path('validate/', Validate.as_view(), name='validate'),
         path('publish/', Publish.as_view(), name='publish'),
+        path('get_archive/', GetArchive.as_view(), name='publish'),
 
         # Documentation
         path('docs/', APIDocsLandingPageView.as_view(), name='api_docs_landing'),

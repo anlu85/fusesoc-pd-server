@@ -356,3 +356,60 @@ class Validate(APIView):
         if serializer.is_valid():
             return Response({'message': 'Core file is valid'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetArchive(APIView):
+    """Endpoint for downloading an archive of the FuseSoC Care Package Directory."""
+    @extend_schema_with_429(
+        summary='Download FuseSoC Core Package Directory Archive',
+        description='Provide a archive containing all core files in FuseSoC Package Directory.',
+        parameters=[
+        ],
+        responses={
+            200: OpenApiResponse(description='FuseSoC Core Package archive successfully retrieved'),
+            500: OpenApiResponse(description='Error message indicating why the validation failed')
+        }
+    )
+    def get(self, request):
+        """Download a FuseSoC core package archive.
+
+        Returns:
+            HttpResponse: The archive as an attachment, or error message if not found.
+        """
+        
+        import shutil
+        import tempfile
+        import zipfile
+        
+        from ..management.commands.init_db import Command as InitDbCommand
+        from git import Repo
+        from django.http import FileResponse
+        try:
+            repo_name, access_token, _default_branch = InitDbCommand().get_repo_info()
+            
+            with tempfile.TemporaryDirectory() as temp_dir:
+                Repo.clone_from(f"https://{access_token}@github.com/{repo_name}.git", temp_dir)
+                
+                archive_files = []
+                for file in os.listdir(temp_dir):
+                    if file.endswith('.core') or file.endswith('.sig'):
+                        full_path = os.path.join(temp_dir, file)
+                        archive_files.append((full_path, file))
+
+                archive_path = os.path.join(temp_dir, 'fusesoc_pd_archive.zip')
+                
+                with zipfile.ZipFile(archive_path, 'w', zipfile.ZIP_DEFLATED) as archive:
+                    for full_path, arcname in archive_files:
+                        archive.write(full_path, arcname=arcname)
+
+                with open(archive_path, 'rb') as f:
+                    archive_file_data = f.read()
+                    
+                response = HttpResponse(archive_file_data, content_type='application/zip')
+                response['Content-Disposition'] = 'attachment; filename="fusesoc_pd_archive.zip"'
+                return response 
+        except Exception as err:
+            return Response(
+                {'error': f'Error retrieving archive: {err}'},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
